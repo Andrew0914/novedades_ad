@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+}
+
+.header-title {
+    margin: 4px 0px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 16px;
+
+}
+
+.grid {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.card {
+    background: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-flow: column;
+    gap: 16px;
+}
+
+.card-title {
+    margin: 0;
+}
+
+.card-img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.card-features {
+    font-size: 12px;
+    margin: 0;
+    list-style: disc;
+    padding-inline: 16px;
+}
+
+.price {
+    font-weight: bold;
+    margin: 0;
+    color: navy;
+
+}
+
+.card-buttons {
+    display: flex;
+    gap: 8px;
+    flex-flow: column;
+}
+
+.buy-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 4px 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.buy-button__shein {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+}
+
+.buy-button__shein:hover {
+    background: #fff;
+    color: #000;
+}
+
+.buy-button__mercado {
+    background: #ffe600;
+    color: #2d3277;
+    border: 2px solid #ffe600;
+}
+
+.buy-button__mercado:hover {
+    background: #fff466;
+    border-color: #fff466;
+}
+
+.buy-button_logo {
+    width: 25px;
+    height: 25px;
+    border-radius: 4px 4px;
+}
