@@ -1,6 +1,7 @@
 import { useState } from "react";
 import BuyButton from "./BuyButton";
 import ProductGallery from "./ProductGallery";
+import whatsappIcon from "../assets/whatssap.png";
 
 export default function ProductCard({ p, theme = "mexican" }) {
   const [showGallery, setShowGallery] = useState(false);
@@ -16,6 +17,13 @@ export default function ProductCard({ p, theme = "mexican" }) {
     setShowGallery(false);
   };
 
+  const openWhatsAppProduct = () => {
+    const message = encodeURIComponent(
+      `¡Hola! Me interesa el producto: ${p.name} - $${p.price} MXN. ¿Podrían darme más información?`,
+    );
+    window.open(`https://wa.me/5215512345678?text=${message}`, "_blank");
+  };
+
   return (
     <>
       <div className={`card theme-card-${theme}`}>
@@ -26,22 +34,71 @@ export default function ProductCard({ p, theme = "mexican" }) {
             className="card-img"
             onClick={openGallery}
           />
+          <div className="image-overlay">
+            <span className="view-photos">📷 Ver más fotos</span>
+          </div>
         </div>
 
         <div className="card-content">
           <h3 className="card-title">{p.name}</h3>
-          <p className="price">${p.price} MXN</p>
 
-          <ul className="card-features">
-            {p.features.map((f, index) => (
-              <li key={`${p.id}-${index}`}>{f}</li>
-            ))}
-          </ul>
+          <div className="price-section">
+            <div className="price">${p.price} MXN</div>
+          </div>
+
+          {/* Key Features - More prominent */}
+          <div className="main-features">
+            <ul className="card-features">
+              {p.features.map((f, index) => (
+                <li key={`${p.id}-${index}`}>{f}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Additional Info */}
+          <div className="additional-info">
+            <div className="info-item">
+              <span className="info-icon">🧪</span>
+              <span className="info-text">Producto probado</span>
+            </div>
+            <div className="info-item">
+              <span className="info-icon">📅</span>
+              <span className="info-text">15 días para que lo pruebes</span>
+            </div>
+          </div>
         </div>
 
+        {/* Contact Section */}
+        <div className="card-contact">
+          <button
+            className="whatsapp-product-btn"
+            onClick={openWhatsAppProduct}
+          >
+            <img src={whatsappIcon} alt="WhatsApp" className="whatsapp-icon" />
+            <div className="whatsapp-content">
+              <span className="whatsapp-label">Preguntar por WhatsApp</span>
+              <span className="whatsapp-subtitle">Respuesta inmediata</span>
+            </div>
+          </button>
+        </div>
+
+        {/* Buy Buttons */}
         <div className="card-buttons">
+          <div className="buttons-title">🛒 También disponible en:</div>
           <BuyButton url={p.shein} type="shein" />
           <BuyButton url={p.mercado} type="mercado" />
+        </div>
+
+        {/* Trust Elements */}
+        <div className="trust-elements">
+          <div className="trust-item">
+            <span className="trust-icon">🚇</span>
+            <span className="trust-text">Entrega en metro</span>
+          </div>
+          <div className="trust-item">
+            <span className="trust-icon">💯</span>
+            <span className="trust-text">Producto probado</span>
+          </div>
         </div>
       </div>
 
