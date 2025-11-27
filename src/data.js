@@ -1,214 +1,158 @@
-import ledImg from "./assets/products/luces.jpeg";
+// Utility function to automatically import all images from 100_serie directories
+function importAllImages() {
+  const images = {};
 
-export const products = [
-  {
-    id: 1,
-    name: "Serie LED Básica - Perfecta para Principiantes",
-    price: 199,
-    originalPrice: 249,
+  // Use multiple static glob calls for different formats (import.meta.glob requires static strings)
+  const jpegModules = import.meta.glob(
+    "./assets/products/100_serie_*/[0-3].jpeg",
+    { eager: true },
+  );
+
+  const jpgModules = import.meta.glob(
+    "./assets/products/100_serie_*/[0-3].jpg",
+    { eager: true },
+  );
+
+  const pngModules = import.meta.glob(
+    "./assets/products/100_serie_*/[0-3].png",
+    { eager: true },
+  );
+
+  const webpModules = import.meta.glob(
+    "./assets/products/100_serie_*/[0-3].webp",
+    { eager: true },
+  );
+
+  // Merge all image modules into one object
+  const imageModules = {
+    ...jpegModules,
+    ...jpgModules,
+    ...pngModules,
+    ...webpModules,
+  };
+
+  // Process each image path
+  Object.keys(imageModules).forEach((path) => {
+    // Extract series name and image number from path
+    // path format: "./assets/products/100_serie_colores/0.jpeg" or "./assets/products/100_serie_colores/0.png"
+    const match = path.match(
+      /\/100_serie_([^/]+)\/(\d+)\.(jpeg|jpg|png|webp)$/,
+    );
+
+    if (match) {
+      const [, seriesName, imageNumber] = match;
+
+      // Initialize array for this series if it doesn't exist
+      if (!images[seriesName]) {
+        images[seriesName] = [];
+      }
+
+      // Add the image to the appropriate series
+      images[seriesName][parseInt(imageNumber)] = imageModules[path].default;
+    }
+  });
+
+  // Sort arrays and remove any undefined values
+  Object.keys(images).forEach((seriesName) => {
+    images[seriesName] = images[seriesName].filter((img) => img !== undefined);
+  });
+
+  return images;
+}
+
+// Import all images automatically
+const serieImages = importAllImages();
+
+// Series information for generating products
+const seriesInfo = {
+  blanca: {
+    name: "Blanca",
+    color: "white",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-Colorful-Lighting-100-LED-String-Lights-Outdoor-Waterproof-Fairy-Lights-Christmas-Decoration-For-Bedroom-Garden-And-Party-p-244517265.html?fbclid=IwY2xjawOUdj5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeEaMARvFH6gH_1k3Ih6-8ivHoq-ID4ixCY57jUK3wULVMBPmO6r1XVO8e2oY_aem_HeoEX67t-t6AkuSBGEVdiQ&main_attr=27_447",
+  },
+  calida: {
+    name: "Cálida",
+    color: "warm",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-Colorful-Lighting-100-LED-String-Lights-Outdoor-Waterproof-Fairy-Lights-Christmas-Decoration-For-Bedroom-Garden-And-Party-p-41428015.html?fbclid=IwY2xjawOUdj5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeEaMARvFH6gH_1k3Ih6-8ivHoq-ID4ixCY57jUK3wULVMBPmO6r1XVO8e2oY_aem_HeoEX67t-t6AkuSBGEVdiQ&main_attr=27_739",
+  },
+  colores: {
+    name: "Multicolor",
+    color: "multicolor",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-Colorful-Lighting-100-LED-String-Lights-Outdoor-Waterproof-Fairy-Lights-Christmas-Decoration-For-Bedroom-Garden-And-Party-p-41428027.html?fbclid=IwY2xjawOUdj5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeEaMARvFH6gH_1k3Ih6-8ivHoq-ID4ixCY57jUK3wULVMBPmO6r1XVO8e2oY_aem_HeoEX67t-t6AkuSBGEVdiQ",
+  },
+  jade: {
+    name: "Jade",
+    color: "jade",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-Colorful-Lighting-100-LED-String-Lights-Outdoor-Waterproof-Fairy-Lights-Christmas-Decoration-For-Bedroom-Garden-And-Party-p-245655331.html?fbclid=IwY2xjawOUdj5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeEaMARvFH6gH_1k3Ih6-8ivHoq-ID4ixCY57jUK3wULVMBPmO6r1XVO8e2oY_aem_HeoEX67t-t6AkuSBGEVdiQ&main_attr=27_762",
+  },
+  morada: {
+    name: "Morada",
+    color: "purple",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-Colorful-Lighting-100-LED-String-Lights-Outdoor-Waterproof-Fairy-Lights-Christmas-Decoration-For-Bedroom-Garden-And-Party-p-44047364.html?src_identifier=on%3Dstore%60cn%3DNovedades%20A%26D%60hz%3D0%60ps%3D1_1%60jc%3DthirdPartyStoreHome_5557689290&src_module=DetailBrand&src_tab_page_id=page_goods_detail1764200918998&mallCode=2&pageListType=4",
+    mercado: null,
+  },
+  roja: {
+    name: "Roja",
+    color: "red",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-Colorful-Lighting-100-LED-String-Lights-Outdoor-Waterproof-Fairy-Lights-Christmas-Decoration-For-Bedroom-Garden-And-Party-p-41588781.html?fbclid=IwY2xjawOUdj5leHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEeEaMARvFH6gH_1k3Ih6-8ivHoq-ID4ixCY57jUK3wULVMBPmO6r1XVO8e2oY_aem_HeoEX67t-t6AkuSBGEVdiQ&main_attr=27_2436",
+  },
+  rosa: {
+    name: "Rosa",
+    color: "pink",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-100-LED-Fairy-Lights-Waterproof-Outdoor-String-Lights-Christmas-Lights-Decoration-For-Bedroom-Garden-And-Party-p-205310861.html?src_identifier=on%3Dstore%60cn%3DNovedades%20A%26D%60hz%3D0%60ps%3D1_1%60jc%3DthirdPartyStoreHome_5557689290&src_module=DetailBrand&src_tab_page_id=page_goods_detail1764200918998&mallCode=2&pageListType=4",
+    mercado: null,
+  },
+  verde: { name: "Verde", color: "green" },
+  azul: {
+    name: "Azul",
+    color: "blue",
+    shein:
+      "https://www.shein.com.mx/LED-String-Lights-100-LED-Fairy-Lights-Waterproof-Outdoor-String-Lights-Christmas-Lights-Decoration-For-Bedroom-Garden-And-Party-p-205310260.html?src_identifier=on%3Dstore%60cn%3DNovedades%20A%26D%60hz%3D0%60ps%3D1_1%60jc%3DthirdPartyStoreHome_5557689290&src_module=DetailBrand&src_tab_page_id=page_goods_detail1764200918998&mallCode=2&pageListType=4&imgRatio=1-1&detailBusinessFrom=0-2&pageListType=4",
+  },
+};
+
+// Generate products automatically for each available series
+export const products = Object.keys(serieImages)
+  .sort()
+  .filter(
+    (seriesKey) => serieImages[seriesKey] && serieImages[seriesKey].length > 0,
+  )
+  .map((seriesKey, index) => ({
+    id: index + 1,
+    name: `Serie LED ${seriesInfo[seriesKey]?.name || seriesKey} de 100 focos, 5 metros`,
+    color: seriesInfo[seriesKey]?.color || seriesKey,
+    price: 50,
+    originalPrice: 125,
     features: [
       "5 metros de longitud total",
       "100 focos LED de alta calidad",
-      "Luz blanca cálida (3000K) - muy acogedora",
-      "Cable verde que se disimula en plantas",
-      "Consumo: solo 8 watts (ahorra 90% vs focos tradicionales)",
-      "Resistente a lluvia y sol (IP44)",
+      "Cable transparente",
+      "Exteriores en interiores",
       "Incluye enchufe mexicano estándar",
-      "Manual de instalación en español",
     ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "interior-exterior",
-    energySaving: "90%",
-
-    installation: "Muy fácil - sin herramientas",
-    usageTime: "50,000 horas (5+ años de uso diario)",
-  },
-  {
-    id: 2,
-    name: "Serie LED Multicolor con Control Remoto",
-    price: 349,
-    originalPrice: 429,
-    features: [
-      "10 metros - ideal para patios grandes",
-      "200 focos multicolor programables",
-      "8 modos diferentes: parpadeo, ondas, fijo, etc.",
-      "Control remoto incluido (alcance 15 metros)",
-      "Perfecta para fiestas y celebraciones",
-      "Resistente a clima extremo (IP65)",
-      "Timer automático - se apaga sola",
-      "Memoria: recuerda tu configuración favorita",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "exterior",
-    energySaving: "85%",
-
-    installation: "Fácil - incluye ganchos de instalación",
-    usageTime: "30,000 horas (3+ años de uso diario)",
-  },
-  {
-    id: 3,
-    name: "Cortina LED Cascada - Efecto Profesional",
-    price: 429,
-    originalPrice: 549,
-    features: [
-      "Medidas: 3 metros de ancho x 2 metros de alto",
-      "300 focos LED distribuidos uniformemente",
-      "Efecto cascada - como lluvia de luz",
-      "Luz blanca fría brillante (6000K)",
-      "Ideal para eventos y comercios",
-      "8 funciones programables con botón",
-      "Cable transparente casi invisible",
-      "Incluye ganchos para colgar fácilmente",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "decorativo",
-    energySaving: "88%",
-
-    installation: "Requiere 2 personas para instalación",
-    usageTime: "40,000 horas (4+ años de uso)",
-  },
-  {
-    id: 4,
-    name: "Serie LED Inteligente WiFi - Tecnología Moderna",
-    price: 289,
-    originalPrice: 359,
-    features: [
-      "5 metros con tecnología inteligente",
-      "Control desde tu celular (Android/iPhone)",
-      "Millones de colores disponibles",
-      "Compatible con Alexa y Google Home",
-      "Se sincroniza con música automáticamente",
-      "Programa horarios desde la app",
-      "Comparte configuraciones con familia",
-      "Tutorial en video incluido",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "tecnología",
-    energySaving: "92%",
-
-    installation: "Requiere WiFi en casa",
-    usageTime: "60,000 horas (6+ años de uso)",
-  },
-  {
-    id: 5,
-    name: "Mini Serie LED a Pilas - Sin Cables",
-    price: 99,
-    originalPrice: 139,
-    features: [
-      "2.5 metros compactos y portátiles",
-      "50 focos micro LED súper brillantes",
-      "Funciona con 3 pilas AA (incluidas)",
-      "No necesita contacto eléctrico",
-      "Luz blanca cálida relajante",
-      "Perfecta para interiores y decoración",
-      "Botón de encendido/apagado fácil",
-      "Duración: 72 horas continuas con pilas nuevas",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "interior",
-    energySaving: "95%",
-
-    installation: "Sin instalación - lista para usar",
-    usageTime: "25,000 horas (2+ años de uso)",
-  },
-  {
-    id: 6,
-    name: "Serie LED Solar - Ecológica y Económica",
-    price: 259,
-    originalPrice: 329,
-    features: [
-      "12 metros de luces ecológicas",
-      "Panel solar de alta eficiencia incluido",
-      "100 focos LED que se cargan con el sol",
-      "Funciona 8-10 horas después de carga completa",
-      "Sensor automático: se enciende al anochecer",
-      "Cero costo de electricidad - 100% gratis",
-      "Resistente a lluvia y granizo",
-      "Cable de 2 metros del panel a las luces",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "solar",
-    energySaving: "100%",
-
-    installation: "Solo colocar panel al sol",
-    usageTime: "30,000 horas (3+ años sin mantenimiento)",
-  },
-  {
-    id: 7,
-    name: "Red LED Decorativa - Cobertura Total",
-    price: 189,
-    originalPrice: 249,
-    features: [
-      "Red de 2x2 metros (4 metros cuadrados)",
-      "144 focos distribuidos uniformemente",
-      "Diseño de red profesional",
-      "Luz blanca cálida acogedora",
-      "Instalación súper rápida y sencilla",
-      "Ideal para paredes, techos y jardines",
-      "Cable resistente y flexible",
-      "Incluye 20 clips de sujeción",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "decorativo",
-    energySaving: "87%",
-
-    installation: "15 minutos con clips incluidos",
-    usageTime: "45,000 horas (4+ años de uso)",
-  },
-  {
-    id: 8,
-    name: "Serie LED Profesional - Para Negocios",
-    price: 699,
-    originalPrice: 899,
-    features: [
-      "25 metros de longitud comercial",
-      "500 focos LED de grado profesional",
-      "Diseñada para uso comercial intensivo",
-      "Multicolor programable con controlador",
-      "Resistente a condiciones extremas",
-      "Garantía extendida de 2 años",
-      "Incluye controlador profesional",
-      "Soporte técnico telefónico incluido",
-    ],
-    img: [ledImg, ledImg, ledImg],
-    shein: "https://shein.com",
-    mercado: "https://mercadolibre.com",
-    category: "comercial",
-    energySaving: "90%",
-
-    installation: "Recomendamos instalación profesional",
-    usageTime: "80,000 horas (8+ años uso comercial)",
-  },
-];
+    img: serieImages[seriesKey],
+    shein: seriesInfo[seriesKey]?.shein,
+    mercado: seriesInfo[seriesKey]?.mercado,
+    category: "100_serie",
+  }));
 
 // Additional data for the enhanced experience
 export const businessInfo = {
-  phone: "551-234-5678",
-  whatsapp: "5215512345678",
-  location: "Ciudad de México",
-  experience: "5 años",
-  schedule: "Entregas: Sábados y Domingos en estaciones de metro",
-  delivery: "Solo entregas en estaciones de metro CDMX",
-  paymentMethods: ["Solo efectivo contra entrega"],
-  socialMedia: {
-    facebook: "Novedades A&D",
-    instagram: "@novedades_ad",
-    marketplace: "Novedades A&D",
-  },
+  phone: "5617372008",
+  whatsapp: "5617372008",
+  shein:
+    "https://www.shein.com.mx/store/home?store_code=5557689290&ici=PageGoodsDetail&main_cate_id=4024&main_goods_id=30589261&rule_poskey=DetailShopItemList&src_identifier=on%3Dstore%60cn%3DNovedades%20A%26D%60hz%3D0%60ps%3D1_1%60jc%3DthirdPartyStoreHome_5557689290&src_module=DetailBrand&src_tab_page_id=page_goods_detail1764200918998&tab=home",
+  mercado: null,
+  instagram: null,
+  facebook: null,
+  tiktok: null,
 };
 
 export const testimonials = [
@@ -253,7 +197,6 @@ export const faqData = [
     answer:
       "Solo aceptamos efectivo contra entrega. El pago se realiza en el momento de recibir tu producto en la estación de metro acordada.",
   },
-
   {
     question: "¿Los productos vienen probados?",
     answer:
@@ -280,3 +223,6 @@ export const faqData = [
       "Podemos entregar en cualquier estación de metro de la CDMX. Coordinamos contigo la más conveniente según tu ubicación.",
   },
 ];
+
+// Export the images object for use in other components if needed
+export { serieImages };

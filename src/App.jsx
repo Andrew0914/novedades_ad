@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { products } from "./data";
+import { products, businessInfo } from "./data";
 import logo from "./assets/logo.png";
 import whatsappIcon from "./assets/whatssap.png";
 import facebookIcon from "./assets/facebook.png";
@@ -121,11 +121,10 @@ export default function App() {
     const message = encodeURIComponent(
       "¡Hola! Me interesa ver sus luces LED. ¿Podrían darme más información?",
     );
-    window.open(`https://wa.me/5215512345678?text=${message}`, "_blank");
-  };
-
-  const callPhone = () => {
-    window.open("tel:+5215512345678");
+    window.open(
+      `https://wa.me/${businessInfo.whatsapp}?text=${message}`,
+      "_blank",
+    );
   };
 
   return (
@@ -169,47 +168,57 @@ export default function App() {
               alt="WhatsApp"
               className="platform-icon-small"
             />
-            WhatsApp: 551-234-5678
+            WhatsApp: {businessInfo.whatsapp}
           </button>
         </div>
         <div className="purchase-minimal">
           <h4>🛒 Comprar en</h4>
           <div className="purchase-options">
-            <a
-              href="https://www.facebook.com/marketplace"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="purchase-item purchase-link"
-            >
-              <img
-                src={facebookIcon}
-                alt="Facebook"
-                className="platform-icon-tiny"
-              />
-              Facebook
-            </a>
-            <a
-              href="https://www.mercadolibre.com.mx"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="purchase-item purchase-link"
-            >
-              <img
-                src={mercadoIcon}
-                alt="MercadoLibre"
-                className="platform-icon-tiny"
-              />
-              MercadoLibre
-            </a>
-            <a
-              href="https://shein.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="purchase-item purchase-link"
-            >
-              <img src={sheinIcon} alt="Shein" className="platform-icon-tiny" />
-              Shein
-            </a>
+            {businessInfo.facebook && (
+              <a
+                href={businessInfo.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="purchase-item purchase-link"
+              >
+                <img
+                  src={facebookIcon}
+                  alt="Facebook"
+                  className="platform-icon-tiny"
+                />
+                Facebook
+              </a>
+            )}
+            {businessInfo.mercado && (
+              <a
+                href={businessInfo.mercado}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="purchase-item purchase-link"
+              >
+                <img
+                  src={mercadoIcon}
+                  alt="MercadoLibre"
+                  className="platform-icon-tiny"
+                />
+                MercadoLibre
+              </a>
+            )}
+            {businessInfo.shein && (
+              <a
+                href={businessInfo.shein}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="purchase-item purchase-link"
+              >
+                <img
+                  src={sheinIcon}
+                  alt="Shein"
+                  className="platform-icon-tiny"
+                />
+                Shein
+              </a>
+            )}
             <button
               onClick={openWhatsApp}
               className="purchase-item purchase-link metro-contact"
@@ -235,7 +244,6 @@ export default function App() {
 
       {/* Contact Section - Complete */}
       <div className="contact-section">
-        <h2 className="contact-title">📞 Contáctanos para pedidos</h2>
         <div className="contact-buttons">
           <button className="whatsapp-btn" onClick={openWhatsApp}>
             <img
@@ -245,7 +253,7 @@ export default function App() {
             />
             <div className="contact-info">
               <span className="contact-label">WhatsApp</span>
-              <span className="contact-number">551-234-5678</span>
+              <span className="contact-number">{businessInfo.whatsapp}</span>
             </div>
           </button>
         </div>
@@ -254,14 +262,6 @@ export default function App() {
           <span className="hours-text">
             Entregas: Sábados y Domingos en estaciones de metro CDMX
           </span>
-        </div>
-        <div className="sales-info">
-          <p>
-            🛒 <strong>También vendemos en:</strong>
-          </p>
-          <p>• MercadoLibre México</p>
-          <p>• Shein México</p>
-          <p>• Facebook Marketplace</p>
         </div>
       </div>
 
@@ -275,7 +275,7 @@ export default function App() {
               "Excelente calidad y muy buen precio. Las luces llegaron rápido y
               funcionan perfecto."
             </p>
-            <span className="reviewer">- María G., Guadalajara</span>
+            <span className="reviewer">- María G.,Metro Villa de Aragón</span>
           </div>
           <div className="review">
             <div className="stars">⭐⭐⭐⭐⭐</div>
@@ -283,7 +283,7 @@ export default function App() {
               "Muy recomendable, la atención es muy buena y me ayudaron a elegir
               las luces perfectas."
             </p>
-            <span className="reviewer">- Carlos R., Monterrey</span>
+            <span className="reviewer">- Carlos R., Metro Juarez</span>
           </div>
           <div className="review">
             <div className="stars">⭐⭐⭐⭐⭐</div>
@@ -291,7 +291,7 @@ export default function App() {
               "Compré para mi negocio y quedé muy satisfecha. Buena calidad y
               garantía."
             </p>
-            <span className="reviewer">- Ana L., CDMX</span>
+            <span className="reviewer">- Ana L., Metro Nativitas</span>
           </div>
         </div>
       </div>
@@ -325,8 +325,9 @@ export default function App() {
               ?
             </h3>
             <p>
-              Todas excepto la línea A, entregamos Sábados y Domingos
-              únicamente, entre las 12:00 AM y 8:00 PM.
+              De Miercoles a viernes 6PM a 9PM en linea 9 (café) Sábado y
+              domingo de 12PM a 8PM excepto linea A y Linea B de Buenavista a
+              Villa de Aragón
             </p>
           </div>
         </div>
@@ -339,7 +340,7 @@ export default function App() {
             <h3>Novedades A&D</h3>
             <p>Tu tienda de confianza para luces LED</p>
             <p>📍 Ciudad de México</p>
-            <p>📱 WhatsApp: 551-234-5678</p>
+            <p>📱 WhatsApp: {businessInfo.whatsapp}</p>
             <div className="metro-info">
               <p>
                 🚇 <strong>Entregas en estaciones del metro CDMX</strong>
@@ -356,56 +357,56 @@ export default function App() {
           </div>
           <div className="footer-section">
             <h3>Síguenos o compra en:</h3>
-            <p>
+            {businessInfo.shein && (
               <a
-                href="https://www.facebook.com/marketplace"
+                href={businessInfo.shein}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+              >
+                🛍️ SHEIN: Novedades A&D
+              </a>
+            )}
+            {businessInfo.mercado && (
+              <a
+                href={businessInfo.mercado}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+              >
+                🛍️ Mercado Libre: Novedades A&D
+              </a>
+            )}
+            {businessInfo.facebook && (
+              <a
+                href={businessInfo.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-link"
               >
                 📘 Facebook: Novedades A&D
               </a>
-            </p>
-            <p>
+            )}
+            {businessInfo.instagram && (
               <a
-                href="https://www.instagram.com/novedades_ad"
+                href={businessInfo.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-link"
               >
                 📷 Instagram: @novedades_ad
               </a>
-            </p>
-            <p>
+            )}
+            {businessInfo.tiktok && (
               <a
-                href="https://www.tiktok.com/@novedades_ad"
+                href={businessInfo.tiktok}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-link"
               >
                 📷 Tiktok: @novedades_ad
               </a>
-            </p>
-            <p>
-              <a
-                href="https://www.mercadolibre.com.mx"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-link"
-              >
-                🛒 MercadoLibre: Novedades A&D
-              </a>
-            </p>
-            <p>
-              <a
-                href="https://shein.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-link"
-              >
-                🛒 Shein: Novedades A&D
-              </a>
-            </p>
+            )}
           </div>
         </div>
         <div className="footer-bottom">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import BuyButton from "./BuyButton";
 import ProductGallery from "./ProductGallery";
 import whatsappIcon from "../assets/whatssap.png";
+import { businessInfo } from "../data";
 
 export default function ProductCard({ p, theme = "mexican" }) {
   const [showGallery, setShowGallery] = useState(false);
@@ -19,9 +20,12 @@ export default function ProductCard({ p, theme = "mexican" }) {
 
   const openWhatsAppProduct = () => {
     const message = encodeURIComponent(
-      `¡Hola! Me interesa el producto: ${p.name} - $${p.price} MXN. ¿Podrían darme más información?`,
+      `Desde página web 🌎 - ¡Hola! Me interesa el producto: ${p.name} - $${p.price} MXN. ¿Podrían darme más información?`,
     );
-    window.open(`https://wa.me/5215512345678?text=${message}`, "_blank");
+    window.open(
+      `https://wa.me/${businessInfo.whatsapp}?text=${message}`,
+      "_blank",
+    );
   };
 
   return (
@@ -58,8 +62,8 @@ export default function ProductCard({ p, theme = "mexican" }) {
           {/* Additional Info */}
           <div className="additional-info">
             <div className="info-item">
-              <span className="info-icon">🧪</span>
-              <span className="info-text">Producto probado</span>
+              <span className="info-icon">💯</span>
+              <span className="info-text">Producto Garantizado</span>
             </div>
             <div className="info-item">
               <span className="info-icon">📅</span>
@@ -84,21 +88,8 @@ export default function ProductCard({ p, theme = "mexican" }) {
 
         {/* Buy Buttons */}
         <div className="card-buttons">
-          <div className="buttons-title">🛒 También disponible en:</div>
-          <BuyButton url={p.shein} type="shein" />
-          <BuyButton url={p.mercado} type="mercado" />
-        </div>
-
-        {/* Trust Elements */}
-        <div className="trust-elements">
-          <div className="trust-item">
-            <span className="trust-icon">🚇</span>
-            <span className="trust-text">Entrega en metro</span>
-          </div>
-          <div className="trust-item">
-            <span className="trust-icon">💯</span>
-            <span className="trust-text">Producto probado</span>
-          </div>
+          {p.shein && <BuyButton url={p.shein} type="shein" />}
+          {p.mercado && <BuyButton url={p.mercado} type="mercado" />}
         </div>
       </div>
 
